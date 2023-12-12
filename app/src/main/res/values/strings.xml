@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Signify</string>
+
+    <string name="back4app_server_url">https://parseapi.back4app.com</string>
+
+
+    <string name="back4app_app_id">ih7xDqCrUDUbqV1kxyDoQs3EJZiSgkAewdQDmJvb</string>
+    <string name="back4app_client_key">JEuUj4gcT6WVWDN6IEfm2Ize9K1k64vt5SqM5f7Q</string>
 </resources>
