@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- activity_form.xml -->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primaryColor">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_margin="16dp"
+            android:background="@drawable/rounded_border"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Informacion del cliente"
+                android:textColor="@color/primaryColor"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="14dp"/>
+
+            <!-- EditText para el nombre de usuario -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+
+                <EditText
+                    android:id="@+id/editTextNombreClient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre Completo"
+                    android:inputType="text"
+                    android:backgroundTint="@color/white"
+                    android:textColorHint="@color/black"
+                    android:textColor="@color/black"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- EditText para el correo electrónico -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <EditText
+                    android:id="@+id/editTextEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:hint="Correo electrónico"
+                    android:backgroundTint="@color/white"
+                    android:textColorHint="@color/black"
+                    android:textColor="@color/black"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- EditText para la fecha de emisión -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <EditText
+                    android:id="@+id/editTextFechaEmision"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Fecha de emisión"
+                    android:focusable="false"
+                    android:backgroundTint="@color/white"
+                    android:textColorHint="@color/black"
+                    android:textColor="@color/black"
+                    android:onClick="showDatePickerDialog"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Botón para subir archivo .key -->
+            <Button
+                android:id="@+id/btnUploadKeyFile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Subir E-Firma"
+                android:backgroundTint="@color/primaryColor"
+                android:textColor="@color/white"
+                android:layout_marginTop="16dp"
+                android:onClick="uploadKeyFile"/>
+
+            <!-- Botón para registrar -->
+            <Button
+                android:id="@+id/btnContinue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Continuar"
+                android:backgroundTint="@color/primaryColor"
+                android:textColor="@color/white"/>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

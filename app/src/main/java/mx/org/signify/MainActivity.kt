@@ -3,10 +3,14 @@ package mx.org.signify
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toolbar
+import com.parse.ParseObject
+import com.parse.ParseQuery
 import com.parse.ParseUser
 
 class MainActivity : AppCompatActivity() {
@@ -40,9 +44,68 @@ class MainActivity : AppCompatActivity() {
         // Configurar el botón para abrir el formulario
         val btnOpenForm = findViewById<ImageButton>(R.id.btnOpenForm)
         btnOpenForm.setOnClickListener {
-            // Abre el formulario
-            // Puedes iniciar una nueva actividad para el formulario o mostrar un cuadro de diálogo, dependiendo de tus necesidades
-            // Ejemplo: startActivity(Intent(this, TuActividadDeFormulario::class.java))
+            // Abrir la actividad del formulario
+            val intentForm = Intent(this, FormActivity::class.java)
+            startActivity(intentForm)
+        }
+
+        // Verificar y crear la tabla "Cliente" si no existe
+        checkAndCreateClienteTable()
+
+        // Obtener la referencia del ListView desde el diseño
+        val listView = findViewById<ListView>(R.id.listView)
+
+        // Configurar el ListView y su adaptador
+        val adapter = ClienteAdapter()
+        listView.adapter = adapter
+        fetchDataFromClienteTable(adapter)
+
+    }
+    private fun checkAndCreateClienteTable() {
+        // Verificar si la tabla "Cliente" existe
+        val query = ParseQuery.getQuery<ParseObject>("Cliente")
+        query.limit = 1
+        query.findInBackground { results, e ->
+            if (e == null && results.isEmpty()) {
+                // La tabla "Cliente" no existe, crearla
+                val clienteObject = ParseObject("Cliente")
+                clienteObject.saveInBackground { saveException ->
+                    if (saveException == null) {
+                        Log.d("MainActivity", "Tabla Cliente creada exitosamente.")
+                    } else {
+                        Log.e("MainActivity", "Error al crear tabla Cliente: ${saveException.localizedMessage}")
+                    }
+                }
+            } else if (e != null) {
+                // Hubo un error en la consulta, maneja el error según tus necesidades
+                Log.e("MainActivity", "Error al verificar la existencia de la tabla Cliente: ${e.localizedMessage}")
+            }
         }
     }
+
+    private fun fetchDataFromClienteTable(adapter: ClienteAdapter) {
+        val currentUser = ParseUser.getCurrentUser()
+        if (currentUser != null) {
+            val query = ParseQuery.getQuery<ParseObject>("Cliente")
+            query.whereEqualTo("user", currentUser)
+            query.findInBackground { results, e ->
+                if (e == null) {
+                    // Convertir las fechas antes de ordenar
+                    val sortedResults = results.sortedBy {
+                        it.getString("fechaEmision")?.toDate("dd/MM/yyyy")
+                    }
+
+                    // Actualizar el adaptador con los datos ordenados
+                    adapter.submitList(sortedResults)
+                } else {
+                    // Hubo un error en la consulta, maneja el error según tus necesidades
+                    Log.e("MainActivity", "Error al obtener datos de la tabla Cliente: ${e.localizedMessage}")
+                }
+            }
+        } else {
+            // El usuario no está autenticado, puedes manejar esto según tus necesidades
+            Log.e("MainActivity", "Usuario no autenticado al obtener datos de la tabla Cliente")
+        }
+    }
+
 }

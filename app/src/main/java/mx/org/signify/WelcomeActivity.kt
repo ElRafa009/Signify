@@ -30,6 +30,6 @@ class WelcomeActivity : AppCompatActivity() {
             val intentMain = Intent(this, MainActivity::class.java)
             startActivity(intentMain)
             finish()
-        }, 3000) // 3000 milisegundos (3 segundos)
+        }, 1500) // 3000 milisegundos (3 segundos)
     }
 }
