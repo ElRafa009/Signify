@@ -13,7 +13,12 @@ import com.parse.ParseObject
 import com.parse.ParseQuery
 import com.parse.ParseUser
 
+const val FORM_ACTIVITY_REQUEST_CODE = 123
+
 class MainActivity : AppCompatActivity() {
+
+    val adapter = ClienteAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -44,9 +49,9 @@ class MainActivity : AppCompatActivity() {
         // Configurar el botón para abrir el formulario
         val btnOpenForm = findViewById<ImageButton>(R.id.btnOpenForm)
         btnOpenForm.setOnClickListener {
-            // Abrir la actividad del formulario
+            // Abrir la actividad del formulario y esperar un resultado
             val intentForm = Intent(this, FormActivity::class.java)
-            startActivity(intentForm)
+            startActivityForResult(intentForm, FORM_ACTIVITY_REQUEST_CODE)
         }
 
         // Verificar y crear la tabla "Cliente" si no existe
@@ -56,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         val listView = findViewById<ListView>(R.id.listView)
 
         // Configurar el ListView y su adaptador
-        val adapter = ClienteAdapter()
+
         listView.adapter = adapter
         fetchDataFromClienteTable(adapter)
 
@@ -105,6 +110,16 @@ class MainActivity : AppCompatActivity() {
         } else {
             // El usuario no está autenticado, puedes manejar esto según tus necesidades
             Log.e("MainActivity", "Usuario no autenticado al obtener datos de la tabla Cliente")
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // Verifica si el código de solicitud es el de FormActivity y si el resultado es RESULT_OK
+        if (requestCode == FORM_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            // Realiza acciones de actualización aquí (puedes llamar a fetchDataFromClienteTable o lo que sea necesario)
+            fetchDataFromClienteTable(adapter)
         }
     }
 
